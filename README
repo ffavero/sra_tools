@@ -1,0 +1,53 @@
+Collection of script useful to analyse and gather SRA files.
+
+sra_sdk toolkit is needed to transform sra to fastq:
+http://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?cmd=show&f=software&m=software&s=software
+
+run with python 2.7
+
+the script is meant to use with the msub
+queue system (xmsub) at CBS cbs.dtu.dk
+
+
+
+sra_wrapper.py --help
+usage: sra_wrapper.py [-h] [-p] [-t] [--paired] [--gsm] [-d DIR] [--quiet]
+                      [--srasoft SRA] [--tmp_dir TMP_DIR]
+                      GEO_ID
+
+Wrapper to process the SRA of a GEO experiment. It is allowed to pass either a
+GSE experiment id or a single GSM sample id (--gsm). The script will provide
+info about the content of the SRA included in the specified item (--print) or
+can generate a tree directory structure containing the urls of the various
+.sra files (--just-tree). If nothing is specified, the various .sra file will
+be downloaded and transformed in fastq.gz using the xmsub queue system. Each
+job_id submitted to the queue will be also printed in STDOUT.
+
+positional arguments:
+  GEO_ID             A GEO id, a series id (GSE) or a sample id (GSM)
+
+optional arguments:
+  -h, --help         show this help message and exit
+
+Actions:
+  Action to perform, if nothing is specified it will downloads all the
+  files.
+
+  -p, --print        Print a summary of the dataset, numbers of .sra files and
+                     total size
+  -t, --just-tree    Build ONLY the directory structure and .sra urls info.
+
+Input/Output:
+  Argument that involve the output destination
+
+  --paired           Tell sra tolkit that it is a paired-end experiment
+  --gsm              Process a GSM and not a GSE
+  -d DIR, --dir DIR  Set root directory to save files (default working
+                     directory)
+  --quiet            Do not write the xmsub logs
+
+Tweaks:
+  Optional argument that might effect the processes
+
+  --srasoft SRA      Path of the SRA_SDK directory (>=2.1.7)
+  --tmp_dir TMP_DIR  Temp directory where downloads the .sra files
